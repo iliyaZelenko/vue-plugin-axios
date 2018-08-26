@@ -1,8 +1,8 @@
 {
   "name": "vue-plugin-axios",
-  "version": "1.0.2",
-  "main": "dist/vue-plugin-axios.cjs.js",
-  "module": "dist/vue-plugin-axios.esm.js",
+  "version": "1.0.3",
+  "main": "dist/vue-plugin-axios.esm.js",
+  "module": "dist/vue-plugin-axios.cjs.js",
   "browser": "dist/vue-plugin-axios.umd.js",
   "author": "Ilya Zelenko",
   "description": "A wrapper for integrating axios to Vuejs",
