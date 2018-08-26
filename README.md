@@ -2,19 +2,20 @@
 Add Vue plugin
 ```js
 import Vue from 'vue'
-import VueAxiosWrapper from 'vue-axios-wrapper'
+import VueAxios from 'vue-plugin-axios'
 import axios from 'axios'
 import store from '@/store'
 
-Vue.use(VueAxiosWrapper, {
+Vue.use(VueAxios, {
   axios, 
   // example config for axios instance
   config: { 
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://localhost:8000/',
     headers: { // global headers
       'X-Custom-Header': 'my-token'
     },
-    interceptors: {
+    interceptors: { // axios interceptors
+      // this function shows how to add Authorization header to requests
       beforeRequest (config, axiosInstance) {
         let newConfig
         const token = store.state.token // here your auth token
@@ -22,7 +23,7 @@ Vue.use(VueAxiosWrapper, {
         if (token) {
           newConfig = axiosInstance.setHeader({
             auth: token, // thiw will set 'Authorization' header, no need prefix 'Bearer '
-            'X-Custom-Header': 'value1' // example header
+            'X-Custom-Header': 'value' // example header
           })
         } else {
           newConfig = axiosInstance.deleteHeader('auth') // delete 'Authorization' header if token expired
@@ -30,9 +31,10 @@ Vue.use(VueAxiosWrapper, {
   
         return (newConfig && (Object.assign(config, newConfig))) || config
       },
+      // this function shows how to add errors from server to client app
       beforeResponseError (error) {
         if (error.response.data.message) {
-          alert(error.response.data.message) // show response error
+          alert(error.response.data.message) // shows response error
   
           return Promise.reject(error)
         }
@@ -52,7 +54,7 @@ export default {
   }),
   async mounted () {
     // automatic data return, no need to ".data"
-    this.users = await this.$get('/api/get-users/')
+    this.users = await this.$get('api/get-users/')
     const randomUsers = await this.$get('https://randomuser.me/api/')
   }
 }
@@ -60,7 +62,7 @@ export default {
 
 ## Installation
 
-1. `yarn add vue-plugin-axios`
+1. `npm install vue-plugin-axios --save` or `yarn add vue-plugin-axios`
 2. add `Vue.use` like in code above
 
 

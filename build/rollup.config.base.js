@@ -34,16 +34,13 @@
 //     ]
 //   }
 // ]
-import babel from 'rollup-plugin-babel'
+// import babel from 'rollup-plugin-babel'
 import resolve from 'rollup-plugin-node-resolve'
-import vue from 'rollup-plugin-vue'
-import cjs from 'rollup-plugin-commonjs'
-import eslint from 'rollup-plugin-eslint'
-import fs from 'fs'
-import CleanCSS from 'clean-css'
-import pkg from './package.json'
+import commonjs from 'rollup-plugin-commonjs'
+import { eslint } from 'rollup-plugin-eslint'
+import babel from 'rollup-plugin-babel'
 
-const entry = 'index.js'
+const entry = 'src/index.js'
 
 export default {
   input: entry,
@@ -53,16 +50,16 @@ export default {
       main: true,
       browser: true
     }),
-    cjs(),
+    commonjs(),
     eslint(),
     babel({
-      exclude: 'node_modules/**',
-      'plugins': [
-        'external-helpers'
-      ]
+      exclude: 'node_modules/**'
+      // 'plugins': [
+      //   '@babel/plugin-external-helpers' // выдает не понятное предпреждение
+      // ]
     })
   ],
-  watch: {
+  watch: { // https://rollupjs.org/guide/en#rollup-watch
     include: 'src/**'
   }
 }

@@ -34,35 +34,16 @@
 //     ]
 //   }
 // ]
-import babel from 'rollup-plugin-babel'
-import resolve from 'rollup-plugin-node-resolve'
-import vue from 'rollup-plugin-vue'
-import cjs from 'rollup-plugin-commonjs'
-import eslint from 'rollup-plugin-eslint'
-import fs from 'fs'
-import CleanCSS from 'clean-css'
-import pkg from './package.json'
-
-const entry = 'index.js'
+// import babel from 'rollup-plugin-babel'
+import base from './rollup.config.base'
+import pkg from '../package.json'
 
 export default {
-  input: entry,
-  plugins: [
-    resolve({
-      jsnext: true,
-      main: true,
-      browser: true
-    }),
-    cjs(),
-    eslint(),
-    babel({
-      exclude: 'node_modules/**',
-      'plugins': [
-        'external-helpers'
-      ]
-    })
-  ],
-  watch: {
-    include: 'src/**'
+  ...base,
+  output: {
+    exports: 'named',
+    name: pkg.name,
+    file: pkg.main,
+    format: 'umd'
   }
 }
