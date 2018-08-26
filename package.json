@@ -1,9 +1,9 @@
 {
   "name": "vue-plugin-axios",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/vue-plugin-axios.umd.js",
   "module": "dist/vue-plugin-axios.esm.js",
-  "browser": "dist/vue-plugin-axios.min.js",
+  "unpkg": "dist/vue-plugin-axios.min.js",
   "author": "Ilya Zelenko",
   "description": "A wrapper for integrating axios to Vuejs",
   "browserslist": [
