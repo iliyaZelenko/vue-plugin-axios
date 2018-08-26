@@ -1,11 +1,16 @@
 {
   "name": "vue-plugin-axios",
-  "version": "1.0.3",
-  "main": "dist/vue-plugin-axios.esm.js",
-  "module": "dist/vue-plugin-axios.cjs.js",
-  "browser": "dist/vue-plugin-axios.umd.js",
+  "version": "1.0.4",
+  "main": "dist/vue-plugin-axios.umd.js",
+  "module": "dist/vue-plugin-axios.esm.js",
+  "browser": "dist/vue-plugin-axios.min.js",
   "author": "Ilya Zelenko",
   "description": "A wrapper for integrating axios to Vuejs",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "keywords": [
     "vue",
     "axios",
@@ -21,18 +26,28 @@
   "homepage": "https://github.com/iliyaZelenko/vue-plugin-axios#readme",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c"
+    "build2": "rollup -c",
+    "build": "yarn build:browser && yarn build:es && yarn build:umd",
+    "build:browser": "rollup --config build/rollup.config.browser.js",
+    "build:es": "rollup --config build/rollup.config.es.js",
+    "build:umd": "rollup --config build/rollup.config.umd.js"
   },
   "devDependencies": {
-    "eslint": "^5.3.0",
+    "@babel/core": "^7.0.0-rc.3",
+    "@babel/preset-env": "^7.0.0-rc.3",
+    "eslint": "^5.4.0",
     "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
-    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-standard": "^3.1.0",
     "rollup": "^0.65.0",
+    "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-commonjs": "^9.1.6",
-    "rollup-plugin-node-resolve": "^3.3.0"
+    "rollup-plugin-eslint": "^5.0.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^4.0.0",
+    "uglify-es": "^3.3.9"
   },
   "peerDependencies": {
     "vue": ">= 1.0.0"
