@@ -1,4 +1,16 @@
-import { requestPromiseWrap } from './helpers'
+'use strict';
+
+function requestPromiseWrap (method, arg) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = (await this[method](...arg)).data;
+
+      resolve(data);
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
 
 const plugin = {
   install (Vue, options = {}) {
@@ -11,44 +23,35 @@ const plugin = {
         // beforeResponse
         // beforeResponseError
       }
-    } = options
+    } = options;
 
     if (!axios) throw new Error('Vue-axios-wrapper: please, specify in the settings your axios package.')
 
     const module = new Module(axios, config, {
       interceptors
-    })
+    });
+    // {
+    //   baseURL: 'https://some-domain.com/api/',
+    //   timeout: 1000,
+    //   headers: {'X-Custom-Header': 'foobar'}
+    // }
 
-    Object.assign(Vue.prototype, module)
+    Object.assign(Vue.prototype, module);
   }
-}
-
-export default plugin
+};
 
 function Module (axiosPackage, config, other) {
-  const self = this
+  const self = this;
 
-  self.axiosInstance = axiosPackage.create(config)
+  self.axiosInstance = axiosPackage.create(config);
 
   // расширяет
-  axiosInstanceSetCustomHelpers(self)
+  axiosInstanceSetCustomHelpers(self);
   // разрешает пользовательские interceptors
-  axiosInstanceSetInterceptors(self, other.interceptors)
+  axiosInstanceSetInterceptors(self, other.interceptors);
 
-  // TODO $post, $get... и т.д добавлять в этот объект через цикл!
-  // const requests = ['post', 'get', 'put', 'patch', 'delete', 'head', 'options']
-  // const requestsObj = {}
-  //
-  // requests.forEach(name => {
-  //   Object.defineProperty(requestsObj, '$' + name, {
-  //     get: () => {
-  //       return (...arg) => requestPromiseWrap.apply(self.axiosInstance, [name, arg])
-  //     }
-  //   })
-  // })
-
-  const publicObj = {
-    // ...requestsObj, // добавляет в публичный объект методы для удобных запросов, с легким получением data
+  // public obj
+  return {
     get $post () {
       return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['post', arg])
     },
@@ -70,11 +73,11 @@ function Module (axiosPackage, config, other) {
     },
 
     get $head () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['head', arg])
+      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['patch', arg])
     },
 
     get $options () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['options', arg])
+      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['delete', arg])
     },
 
     get $axios () {
@@ -85,45 +88,40 @@ function Module (axiosPackage, config, other) {
       return self.axiosInstance
     }
   }
-
-  // console.log(publicObj)
-
-  // public obj
-  return publicObj
 }
 
 function axiosInstanceSetCustomHelpers (self) {
-  const instance = self.axiosInstance
+  const instance = self.axiosInstance;
 
   // setHeader
   if (!instance.setHeader) {
     instance.setHeader = (nameOrObj, valueForName = null) => {
       if (typeof nameOrObj === 'object') {
         for (let item in nameOrObj) {
-          set(item, nameOrObj[item])
+          set(item, nameOrObj[item]);
         }
       } else if (typeof nameOrObj === 'string') {
-        set(nameOrObj, valueForName)
+        set(nameOrObj, valueForName);
       }
 
-      function set (key, val) {
+      function set(key, val) {
         if (key === 'auth') {
-          instance.setToken(val)
+          instance.setToken(val);
         } else {
-          instance.defaults.headers[key] = val
+          instance.defaults.headers[key] = val;
         }
       }
 
       return instance.defaults
-    }
+    };
 
     // setToken(только если было объявлено setHeader)
     if (!instance.setToken) {
       instance.setToken = (token, type = 'Bearer') => {
-        const value = !token ? null : (type ? type + ' ' : '') + token
+        const value = !token ? null : (type ? type + ' ' : '') + token;
 
         return instance.setHeader('Authorization', value)
-      }
+      };
     }
   }
 
@@ -132,22 +130,22 @@ function axiosInstanceSetCustomHelpers (self) {
     instance.deleteHeader = arrOrKey => {
       if (typeof arrOrKey === 'object') {
         for (let key of arrOrKey) {
-          deleteByKey(key)
+          deleteByKey(key);
         }
       } else if (typeof arrOrKey === 'string') {
-        deleteByKey(arrOrKey)
+        deleteByKey(arrOrKey);
       }
 
-      function deleteByKey (key) {
+      function deleteByKey(key) {
         if (key === 'auth') {
-          delete instance.defaults.headers['Authorization']
+          delete instance.defaults.headers['Authorization'];
         } else {
-          delete instance.defaults.headers[key]
+          delete instance.defaults.headers[key];
         }
       }
 
       return instance.defaults
-    }
+    };
   }
 }
 
@@ -162,25 +160,27 @@ function axiosInstanceSetInterceptors (self, interceptors) {
     return config
   }, error => {
     if (interceptors.beforeRequestError) {
-      interceptors.beforeRequestError(error, self.axiosInstance)
+      interceptors.beforeRequestError(error, self.axiosInstance);
     }
     // Do something with request error
     return Promise.reject(error)
-  })
+  });
 
   // Add a response interceptor
   self.axiosInstance.interceptors.response.use(response => {
     if (interceptors.beforeResponse) {
-      interceptors.beforeResponse(response, self.axiosInstance)
+      interceptors.beforeResponse(response, self.axiosInstance);
     }
     // Do something with response data
-    return response
+    return response;
   }, error => {
     if (interceptors.beforeResponseError) {
-      interceptors.beforeResponseError(error, self.axiosInstance)
+      interceptors.beforeResponseError(error, self.axiosInstance);
     } else {
       // Do something with response error
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
-  })
+  });
 }
+
+module.exports = plugin;

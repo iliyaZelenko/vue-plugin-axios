@@ -1,5 +1,5 @@
 ## Usage
-Vue plugin
+Add Vue plugin
 ```js
 import Vue from 'vue'
 import VueAxiosWrapper from 'vue-axios-wrapper'
@@ -22,7 +22,7 @@ Vue.use(VueAxiosWrapper, {
         if (token) {
           newConfig = axiosInstance.setHeader({
             auth: token, // thiw will set 'Authorization' header, no need prefix 'Bearer '
-            'X-Custom-Header': 'value1'
+            'X-Custom-Header': 'value1' // example header
           })
         } else {
           newConfig = axiosInstance.deleteHeader('auth') // delete 'Authorization' header if token expired
@@ -32,7 +32,7 @@ Vue.use(VueAxiosWrapper, {
       },
       beforeResponseError (error) {
         if (error.response.data.message) {
-          alert(error.response.data.message)
+          alert(error.response.data.message) // show response error
   
           return Promise.reject(error)
         }
@@ -60,7 +60,7 @@ export default {
 
 ## Installation
 
-1. `yarn add https://github.com/iliyaZelenko/vue-axios-wrapper`
+1. `yarn add vue-plugin-axios`
 2. add `Vue.use` like in code above
 
 
@@ -101,7 +101,7 @@ $axios.setHeader({
 })
 ```
 
-Set Authorization token header:
+#### Set Authorization token header:
 ```js 
 $axios.setToken(token[, type = 'Bearer'])
 ```

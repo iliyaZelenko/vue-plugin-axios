@@ -1,16 +1,44 @@
 {
-  "name": "vue-axios-wrapper",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "ilyazelenko",
+  "name": "vue-plugin-axios",
+  "version": "1.0.2",
+  "main": "dist/vue-plugin-axios.cjs.js",
+  "module": "dist/vue-plugin-axios.esm.js",
+  "browser": "dist/vue-plugin-axios.umd.js",
+  "author": "Ilya Zelenko",
+  "description": "A wrapper for integrating axios to Vuejs",
+  "keywords": [
+    "vue",
+    "axios",
+    "wrapper"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iliyaZelenko/vue-plugin-axios.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iliyaZelenko/vue-plugin-axios/issues"
+  },
+  "homepage": "https://github.com/iliyaZelenko/vue-plugin-axios#readme",
   "license": "MIT",
-  "dependencies": {},
+  "scripts": {
+    "build": "rollup -c"
+  },
   "devDependencies": {
     "eslint": "^5.3.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0"
-  }
+    "eslint-plugin-standard": "^3.1.0",
+    "rollup": "^0.65.0",
+    "rollup-plugin-commonjs": "^9.1.6",
+    "rollup-plugin-node-resolve": "^3.3.0"
+  },
+  "peerDependencies": {
+    "vue": ">= 1.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {}
 }
