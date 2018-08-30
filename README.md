@@ -9,27 +9,19 @@ import store from '@/store'
 Vue.use(VueAxios, {
   axios, 
   // example config for axios instance
-  config: { 
-    baseURL: 'http://localhost:8000/',
-    headers: { // global headers
-      'X-Custom-Header': 'my-token'
-    },
-    interceptors: { // axios interceptors
+  config: { // axios instance config
+    baseURL: 'http://localhost:8000/', // api URL
+    headers: { ... },
+    interceptors: {
       // this function shows how to add Authorization header to requests
       beforeRequest (config, axiosInstance) {
-        let newConfig
-        const token = store.state.token // here your auth token
-  
+        const token = store.state.auth.token
+
         if (token) {
-          newConfig = axiosInstance.setHeader({
-            auth: token, // thiw will set 'Authorization' header, no need prefix 'Bearer '
-            'X-Custom-Header': 'value' // example header
-          })
-        } else {
-          newConfig = axiosInstance.deleteHeader('auth') // delete 'Authorization' header if token expired
+          config.headers.Authorization = `Bearer ${token}`
         }
-  
-        return (newConfig && (Object.assign(config, newConfig))) || config
+        
+        return config
       },
       // this function shows how to add errors from server to client app
       beforeResponseError (error) {

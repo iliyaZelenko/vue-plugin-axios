@@ -15,7 +15,11 @@
   "keywords": [
     "vue",
     "axios",
-    "wrapper"
+    "wrapper",
+    "vue.js",
+    "api",
+    "plugin",
+    "http"
   ],
   "repository": {
     "type": "git",

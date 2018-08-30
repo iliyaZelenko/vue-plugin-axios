@@ -5,6 +5,7 @@ export function requestPromiseWrap (method, arg) {
 
       resolve(data)
     } catch (e) {
+      console.log(e)
       reject(e)
     }
   })

@@ -38,7 +38,7 @@ function Module (axiosPackage, config, other) {
   // TODO $post, $get... и т.д добавлять в этот объект через цикл!
   // const requests = ['post', 'get', 'put', 'patch', 'delete', 'head', 'options']
   // const requestsObj = {}
-  //
+
   // requests.forEach(name => {
   //   Object.defineProperty(requestsObj, '$' + name, {
   //     get: () => {
