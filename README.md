@@ -12,27 +12,27 @@ Vue.use(VueAxios, {
   config: { // axios instance config
     baseURL: 'http://localhost:8000/', // api URL
     headers: { ... },
-    interceptors: {
-      // this function shows how to add Authorization header to requests
-      beforeRequest (config, axiosInstance) {
-        const token = store.state.auth.token
-
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`
-        }
-        
-        return config
-      },
-      // this function shows how to add errors from server to client app
-      beforeResponseError (error) {
-        if (error.response.data.message) {
-          alert(error.response.data.message) // shows response error
-  
-          return Promise.reject(error)
-        }
-      }
-    },
     ...
+  },
+  interceptors: {
+    // this function shows how to add Authorization header to requests
+    beforeRequest (config, axiosInstance) {
+      const token = store.state.auth.token
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      
+      return config
+    },
+    // this function shows how to add errors from server to client app
+    beforeResponseError (error) {
+      if (error.response.data.message) {
+        alert(error.response.data.message) // shows response error
+
+        return Promise.reject(error)
+      }
+    }
   }
 })
 ```
