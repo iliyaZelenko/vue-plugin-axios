@@ -35,47 +35,20 @@ function Module (axiosPackage, config, other) {
   // разрешает пользовательские interceptors
   axiosInstanceSetInterceptors(self, other.interceptors)
 
-  // TODO $post, $get... и т.д добавлять в этот объект через цикл!
-  // const requests = ['post', 'get', 'put', 'patch', 'delete', 'head', 'options']
-  // const requestsObj = {}
+  const requests = ['post', 'get', 'put', 'patch', 'delete', 'head', 'options']
+  const requestsObj = {}
 
-  // requests.forEach(name => {
-  //   Object.defineProperty(requestsObj, '$' + name, {
-  //     get: () => {
-  //       return (...arg) => requestPromiseWrap.apply(self.axiosInstance, [name, arg])
-  //     }
-  //   })
-  // })
+  requests.forEach(name => {
+    Object.defineProperty(requestsObj, '$' + name, {
+      enumerable: true,
+      get: () => {
+        return (...arg) => requestPromiseWrap.apply(self.axiosInstance, [name, arg])
+      }
+    })
+  })
 
   const publicObj = {
-    // ...requestsObj, // добавляет в публичный объект методы для удобных запросов, с легким получением data
-    get $post () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['post', arg])
-    },
-
-    get $get () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['get', arg])
-    },
-
-    get $put () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['put', arg])
-    },
-
-    get $patch () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['patch', arg])
-    },
-
-    get $delete () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['delete', arg])
-    },
-
-    get $head () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['head', arg])
-    },
-
-    get $options () {
-      return (...arg) => requestPromiseWrap.apply(self.axiosInstance, ['options', arg])
-    },
+    ...requestsObj, // добавляет в публичный объект методы для удобных запросов, с легким получением data
 
     get $axios () {
       return self.axiosInstance
@@ -85,8 +58,6 @@ function Module (axiosPackage, config, other) {
       return self.axiosInstance
     }
   }
-
-  // console.log(publicObj)
 
   // public obj
   return publicObj
