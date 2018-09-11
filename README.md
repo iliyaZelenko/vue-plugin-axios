@@ -29,9 +29,9 @@ Vue.use(VueAxios, {
     beforeResponseError (error) {
       if (error.response.data.message) {
         alert(error.response.data.message) // shows response error
-
-        return Promise.reject(error)
       }
+      
+      return Promise.reject(error)
     }
   }
 })

@@ -125,7 +125,6 @@ function axiosInstanceSetCustomHelpers (self) {
 function axiosInstanceSetInterceptors (self, interceptors) {
   // Add a request interceptor
   self.axiosInstance.interceptors.request.use(config => {
-    console.log(123, interceptors)
     if (interceptors.beforeRequest) {
       return interceptors.beforeRequest(config, self.axiosInstance) || config
     }
@@ -150,10 +149,9 @@ function axiosInstanceSetInterceptors (self, interceptors) {
   }, error => {
     if (interceptors.beforeResponseError) {
       interceptors.beforeResponseError(error, self.axiosInstance)
-    } else {
-      // Do something with response error
-      return Promise.reject(error)
     }
+    // Do something with response error
+    return Promise.reject(error)
   })
 }
 
