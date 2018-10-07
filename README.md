@@ -11,7 +11,7 @@ Vue.use(VueAxios, {
   // example config for axios instance
   config: { // axios instance config
     baseURL: 'http://localhost:8000/', // api URL
-    headers: { ... },
+    headers: { ... }, // default headers
     ...
   },
   interceptors: {
@@ -27,11 +27,16 @@ Vue.use(VueAxios, {
     },
     // this function shows how to add errors from server to client app
     beforeResponseError (error) {
-      if (error.response.data.message) {
-        alert(error.response.data.message) // shows response error
+      const { response, message } = error
+
+      if (response) { // backend error
+        // shows response error
+        alert(error.response.data.message)
+      } else if (message) { // network error
+        alert(message)
       }
       
-      return Promise.reject(error)
+      // return Promise.reject(error)
     }
   }
 })
@@ -58,6 +63,17 @@ export default {
 2. add `Vue.use` like in code above
 
 
+### Also here is the use with Usage with the Nuxt.js:
+
+```js
+export default ({ store, app }, inject) => {
+  // Vue.use(VueAxios, for some reason did not work
+  VueAxios.install(Vue, {
+    axios,
+    nuxtInject: inject
+  })
+}
+```
 
 ## Full API
 $get(endpoint[, config])
@@ -105,3 +121,4 @@ $axios.setToken(token[, type = 'Bearer'])
 deleteHeader('X-Custom-Header')
 deleteHeader(['X-Custom-Header', 'Y-Custom-Header'])
 ```
+

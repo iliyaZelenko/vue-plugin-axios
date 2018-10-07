@@ -2,6 +2,7 @@ import { requestPromiseWrap } from './helpers'
 
 const plugin = {
   install (Vue, options = {}) {
+    // console.log('БрПАРАРВапв')
     const {
       axios,
       config = {},
@@ -10,7 +11,8 @@ const plugin = {
         // beforeRequestError
         // beforeResponse
         // beforeResponseError
-      }
+      },
+      nuxtInject = null
     } = options
 
     if (!axios) throw new Error('Vue-axios-wrapper: please, specify in the settings your axios package.')
@@ -20,6 +22,15 @@ const plugin = {
     })
 
     Object.assign(Vue.prototype, module)
+
+    // console.log('inject', nuxtInject)
+
+    if (nuxtInject) {
+      for (let getterName in module) {
+        // console.log('getter: ', getterName.slice(1))
+        nuxtInject(getterName.slice(1), module[getterName])
+      }
+    }
   }
 }
 
