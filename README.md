@@ -17,6 +17,7 @@ Vue.use(VueAxios, {
   interceptors: {
     // this function shows how to add Authorization header to requests
     beforeRequest (config, axiosInstance) {
+      // your auth token
       const token = store.state.auth.token
 
       if (token) {
@@ -63,7 +64,7 @@ export default {
 2. add `Vue.use` like in code above
 
 
-### Also here is the use with Usage with the Nuxt.js:
+### This is how you can use with Nuxt.js (client + server):
 
 ```js
 export default ({ store, app }, inject) => {

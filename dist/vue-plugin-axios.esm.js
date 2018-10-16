@@ -1708,23 +1708,12 @@ function requestPromiseWrap(method, arg) {
     return data;
   }); // .catch(e => {
   //   // throw e
-  // }) // или просто убрать catch
-  // return new Promise(async (resolve, reject) => {
-  //   try {
-  //     const data = await this[method](...arg)
-  //
-  //     resolve(data.data)
-  //   } catch (e) {
-  //     console.log(e)
-  //     reject(e)
-  //   }
   // })
 }
 
 var plugin = {
   install: function install(Vue) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    // console.log('БрПАРАРВапв')
     var axios = options.axios,
         _options$config = options.config,
         config = _options$config === void 0 ? {} : _options$config,
@@ -1736,11 +1725,10 @@ var plugin = {
     var module = new Module(axios, config, {
       interceptors: interceptors
     });
-    Object.assign(Vue.prototype, module); // console.log('inject', nuxtInject)
+    Object.assign(Vue.prototype, module);
 
     if (nuxtInject) {
       for (var getterName in module) {
-        // console.log('getter: ', getterName.slice(1))
         nuxtInject(getterName.slice(1), module[getterName]);
       }
     }
