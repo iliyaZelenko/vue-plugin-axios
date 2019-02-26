@@ -1,4 +1,7 @@
 ## Usage
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/iliyaZelenko/vue-plugin-axios.svg)](https://greenkeeper.io/)
+
 Add Vue plugin
 ```js
 import Vue from 'vue'
